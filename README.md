@@ -3,7 +3,7 @@
 ## About Me
 I am Florian Castagnoli, 22, Master’s student in Quantitative Finance & Statistics at Université Paris Panthéon-Assas, future apprentice at Amundi, and future Quant Developer in Luxembourg.
 
-My mission: to become an **elite Quant Developer** — mastering coding, markets, and risk — while building sovereignty through skill, wealth, and reputation.
+My mission: to become an **elite Quant Developer**, mastering coding, markets and risk, while building sovereignty through skill, wealth, and reputation.
 
 ---
 
@@ -44,7 +44,7 @@ This is my **proof-of-work** for why I should be hired as a Quant Analyst / Quan
 
 ## Why This Matters
 Quantitative finance demands **clarity, rigor, and execution**.  
-This repository shows that I don’t just study theory — I **build systems**, I **analyze markets**, and I do it with **professional standards**.  
+This repository shows that I don’t just study theory, I **build systems**, I **analyze markets**, and I do it with **professional standards**.  
 
 If you’re looking for a **junior Quant Dev or Analyst in Luxembourg**, this is why I’m worth hiring.
 
