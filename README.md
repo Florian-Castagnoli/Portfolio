@@ -1,2 +1,53 @@
-# Portfolio
-Portfolio by Florian Castagnoli showcasing projects in quantitative finance and data science. Focus on coding, financial markets, and risk modeling. Built to demonstrate skills for roles in quantitative analysis, risk, and asset management in Luxembourg.
+# Quant Portfolio — Florian Castagnoli
+
+## About Me
+I am Florian Castagnoli, 22, Master’s student in Quantitative Finance & Statistics at Université Paris Panthéon-Assas, future apprentice at Amundi, and future Quant Developer in Luxembourg.
+
+My mission: to become an **elite Quant Developer** — mastering coding, markets, and risk — while building sovereignty through skill, wealth, and reputation.
+
+---
+
+## Purpose of this Repository
+This portfolio is built to **prove my value** to employers and peers.  
+Every project here demonstrates the mix of **quantitative finance, coding ability, and professional discipline** that I bring to the table.
+
+This is not coursework.  
+This is my **proof-of-work** for why I should be hired as a Quant Analyst / Quant Developer.
+
+---
+
+## Projects
+1. **Option Pricing Engine**  
+   Black–Scholes, binomial trees, Monte Carlo simulations, and Greeks.
+
+2. **Risk System: VaR & Stress Testing**  
+   Historical, parametric, and Monte Carlo VaR with stress scenarios.
+
+3. **Factor Regression / PCA**  
+   Factor analysis (Fama–French, momentum) and portfolio exposures.
+
+4. **Algo Backtester**  
+   Backtesting framework with PnL, Sharpe ratio, max drawdown, slippage.
+
+5. **(Bonus) Dashboards**  
+   Power BI & Python visualizations to turn data into decision tools.
+
+---
+
+## Tech Stack
+- Python (pandas, numpy, scipy, statsmodels, scikit-learn, matplotlib)  
+- Testing: pytest  
+- Version control: Git/GitHub  
+- Reporting: Markdown, Jupyter  
+
+---
+
+## Why This Matters
+Quantitative finance demands **clarity, rigor, and execution**.  
+This repository shows that I don’t just study theory — I **build systems**, I **analyze markets**, and I do it with **professional standards**.  
+
+If you’re looking for a **junior Quant Dev or Analyst in Luxembourg**, this is why I’m worth hiring.
+
+---
+
+*Last updated: September 2025*
