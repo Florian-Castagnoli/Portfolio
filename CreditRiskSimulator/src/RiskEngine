@@ -1,0 +1,110 @@
+# ==============================================
+# CreditRiskSimulator - RiskEngine.py
+# ----------------------------------------------
+# Analyzes the simulated loan portfolio
+# ==============================================
+
+
+import pandas as pd
+import numpy as np
+from pathlib import Path
+import matplotlib.pyplot as plt
+
+# -------------------------
+# 1. Setup
+# -------------------------
+BASE_DIR = Path(__file__).resolve().parent.parent   # one level up from /src
+DATA_DIR = BASE_DIR / "data"
+
+# Load dataset
+df = pd.read_csv(DATA_DIR/"loan_portfolio.csv")
+
+# -------------------------
+# 2. Expected Loss (EL) analysis
+# -------------------------
+
+# Total Expected Loss
+el_total = df["EL"].sum()
+
+# EL by loan type (sum, mean, share of portfolio)
+el_by_type = df.groupby("LoanType")["EL"].agg(["sum", "mean"])
+el_by_type["share_%"] = (el_by_type["sum"] / el_total * 100).round(2)
+
+# PD and LGD averages
+PD_portfolio = df["PD"].mean()
+LGD_portfolio = df["LGD"].mean()
+
+# Loss Rate (relative expected loss per exposure)
+df["LossRate"] = df["EL"]/df["EAD"]
+
+# Loan type summary statistics
+stats_by_type = df.groupby("LoanType")[["PD", "LGD", "EAD", "LossRate"]].agg(["mean"])
+
+
+# -------------------------
+# 3. Unexpected Loss (UL)
+# -------------------------
+df["Var"] = df["EAD"]*df["EAD"] * df["PD"] * (1-df["PD"]) * df["LGD"]* df["LGD"]
+df["UL"] = np.sqrt(df["Var"])
+ul_total = np.sqrt(df["Var"].sum())
+
+df["Var_Contrib%"] = (df["Var"] / df["Var"].sum()) * 100
+
+shares = df["Var"] / df["Var"].sum()
+HHI = (shares ** 2).sum()
+
+top= int(len(df)/1000)
+topVar = df.sort_values("Var_Contrib%", ascending=False).head(top)
+
+var_by_type = df.groupby("LoanType")["Var"].agg(["sum", "mean"])
+var_by_type["share_%"] = (var_by_type["sum"] / df["Var"].sum() * 100).round(2)
+
+
+risk_by_type = pd.concat([el_by_type, var_by_type], axis =1, keys = ["EL", "Var"])
+
+df_sorted = df.sort_values("Var_Contrib%", ascending=False)
+df_sorted["CumVarShare"] = df_sorted["Var"].cumsum() / df["Var"].sum() * 100
+df_sorted["LoanRank_%"] = (np.arange(1, len(df_sorted) + 1) / len(df_sorted)) * 100
+
+
+
+
+
+
+
+# -------------------------
+# 4. Print results
+# -------------------------
+
+
+
+print("\n============ Portfolio Summary ============")
+print(f"Total Expected Loss (EL): €{el_total:,.0f}")
+print(f"Unexpected Loss (UL): €{ul_total:,.0f}")
+print(f"Average Probability of Default (PD): {PD_portfolio*100:.2f}%")
+print(f"Average Loss Given Default (LGD): {LGD_portfolio*100:.2f}%\n")
+
+
+print("======== Risk Profile by Loan Type (averages) =======")
+print(stats_by_type, "\n")
+
+print("================ Expected loss and Variance by Loan Type ================")
+print(risk_by_type, "\n")
+
+print(f"Top 0.1% ({top}) des prêts par contribution à la variance totale")
+print(topVar[["Loan id", "LoanType", "EAD", "PD", "LGD", "Var_Contrib%"]])
+
+print("HHI on Variance Contributions:", HHI)
+
+
+plt.figure(figsize=(8,5))
+plt.plot(df_sorted["LoanRank_%"], df_sorted["CumVarShare"], label="Cumulative variance share", color="blue")
+
+plt.title("Pareto Curve of Variance Contributions")
+plt.xlabel("% of Loans (sorted by contribution)")
+plt.ylabel("% of Portfolio Variance Explained")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+

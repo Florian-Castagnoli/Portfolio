@@ -1,0 +1,82 @@
+# ==============================================
+# CreditRiskSimulator - DataGenerator.py
+# ----------------------------------------------
+# Generates a simulated loan portfolio with
+# EAD, PD, LGD, and Expected Loss (EL).
+# ==============================================
+
+# importing library #
+import numpy as np
+import pandas as pd
+from pathlib import Path
+
+# -------------------------
+# 1. Parameters
+# -------------------------
+
+nbLoan = 100000 # number of loan #
+PbMortgage = 0.7 # Probability of the loan being a mortgage loan #
+PbSME = 0.1 # Probability of the loan being a SME loan #
+PbConsumer = 0.2 # Probability of the loan being a consumer loan #
+loan_type = [] # list of loan type randomly assigned #
+
+# Random seed for reproducibility
+np.random.seed(1812)
+
+# Directory setup #
+BASE_DIR = Path (__file__).resolve().parent.parent
+DATA_DIR = BASE_DIR/"data"
+
+
+# -------------------------
+# 2. Loan type assignment
+# -------------------------
+
+for i in range (nbLoan):
+    p=np.random.rand()
+    if (p<PbMortgage) :
+        Loantype = "Mortgage"
+    elif (p<PbMortgage + PbSME):
+        Loantype = "SME"
+    else:
+        Loantype = "Consumer"
+    loan_type.append(Loantype)
+
+
+# -------------------------
+# 3. Loan generator
+# -------------------------
+
+def generate_loans(n, loan_type): # generating loans then storing them into a dictionnary #
+    loans=[]
+    for i in range (n):
+        LoanType = loan_type[i]
+        if LoanType == "Mortgage" :
+            ead = np.random.lognormal(np.log(200000), 0.4)
+            pd = np.random.beta(2,200)
+            lgd = np.random.beta(2,6)
+        elif LoanType == "SME" :
+            ead = np.random.lognormal(np.log(100000), 0.5)
+            pd = np.random.beta(2,60)
+            lgd = np.random.beta(2,3)
+        else :
+            ead = np.random.lognormal(np.log(10000), 0.5)
+            pd = np.random.beta(2,40)
+            lgd = np.random.beta(7,3)
+
+
+        loan = {"Loan id": i+1, "LoanType": LoanType, "EAD" : ead, "PD" : pd, "LGD" : lgd, "EL" : ead*pd*lgd}
+        loans.append(loan)
+
+    return loans
+
+
+# -------------------------
+# 4. Generate dataset
+# -------------------------
+loans = generate_loans(nbLoan, loan_type)
+df=pd.DataFrame(loans)
+df.to_csv(DATA_DIR / "loan_portfolio.csv", index=False)
+
+
+
